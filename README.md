@@ -5,3 +5,6 @@ To run this file, use
 python generate.py data/structure1.txt data/words1.txt       --(with whichever structure and words file you would like).
 Optionally, if you would like a visual output of the solved board, use
 python generate.py data/structure1.txt data/words1.txt output.png
+
+
+![Preview](https://raw.githubusercontent.com/JosephMaltese/Crossword-AI/master/output.png)
