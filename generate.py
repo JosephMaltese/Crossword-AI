@@ -310,6 +310,10 @@ class CrosswordCreator():
     #     currentVariable = self.select_unassigned_variable(assignment)
     #     neighbours = self.crossword.neighbors(currentVariable)
     #
+    #     arcs = [(neighbour, currentVariable) for neighbour in neighbours if neighbour not in assignment]
+    #     if not self.ac3(arcs):
+    #         return None
+    #
     #     for value in self.order_domain_values(currentVariable, assignment):
     #         already_in_assignment = False
     #         for key in assignment:
@@ -354,25 +358,16 @@ class CrosswordCreator():
             return None
 
         for value in self.order_domain_values(currentVariable, assignment):
-            already_in_assignment = False
-            for key in assignment:
-                if assignment[key] == value:
-                    already_in_assignment = True
-            if len(value) == currentVariable.length and not already_in_assignment:
-                valid = True
-                for neighbour in neighbours:
-                    if neighbour in assignment:
-                        intersect = self.crossword.overlaps[currentVariable, neighbour]
-                        if value[intersect[0]] != assignment[neighbour][intersect[1]]:
-                            valid = False
-                if valid:
-                    assignment[currentVariable] = value
+            assignment[currentVariable] = value
+            if not self.consistent(assignment):
+                del assignment[currentVariable]
+                continue
 
-                    result = self.backtrack(assignment)
-                    if result != None:
-                        return result
-                    else:
-                        del assignment[currentVariable]
+            result = self.backtrack(assignment)
+            if result != None:
+                return result
+            else:
+                del assignment[currentVariable]
         return None
 
 
